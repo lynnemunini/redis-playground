@@ -1,0 +1,18 @@
+version: "3.9"
+services:
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./data:/data
+    command: >
+      redis-server
+        --appendonly yes
+        --appendfilename "appendonly.aof"
+        --appendfsync everysec
+        --requirepass ${REDIS_PASSWORD}
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
